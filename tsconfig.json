@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2015", 
+    "module": "ES6", 
+    "outDir": "./packs/bp/scripts",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "lib": ["ES2015", "DOM"] 
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

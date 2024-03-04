@@ -1,0 +1,9 @@
+pack.name=MB-ACM
+pack.description=Minecraft Bedrock Addon Configuration Manager.
+
+
+acm.vxl.test_pack=Test Pack!
+acm.vxl.test=Bool Setting
+acm.vxl.test2=Range Setting
+
+acm.vxl.test_pack2=§5Test Pack Two!
