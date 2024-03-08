@@ -14,8 +14,8 @@ type Button = {
  */
 class ActionForm {
     private form: ActionFormData;
-    private titleText: string;
-    private bodyText: string;
+    private titleText: string | RawMessage;
+    private bodyText: string | RawMessage;
     private buttons: Button[];
 
     constructor() {
@@ -30,7 +30,7 @@ class ActionForm {
      * @param title {string} - The title text to be displayed at the top of the form.
      * @returns {ActionForm} - The instance of this ActionForm for method chaining.
      */
-    setTitle(title: string): ActionForm {
+    setTitle(title: string | RawMessage): ActionForm {
         this.titleText = title;
         return this;
     }
@@ -40,7 +40,7 @@ class ActionForm {
      * @param body {string} - The body text to be displayed below the title.
      * @returns {ActionForm} - The instance of this ActionForm for method chaining.
      */
-    setBody(body: string): ActionForm {
+    setBody(body: string | RawMessage): ActionForm {
         this.bodyText = body;
         return this;
     }
@@ -157,7 +157,7 @@ class ModalForm {
      * @param defaultValueIndex {number} [optional] - The index of the default option selected in the dropdown.
      * @returns {ModalForm} - The instance of this ModalForm for method chaining.
      */
-    addDropdown(label: string, options: string[], defaultValueIndex: number = 0): ModalForm {
+    addDropdown(label: string | RawMessage, options: string[] | RawMessage[], defaultValueIndex: number = 0): ModalForm {
         this.form.dropdown(label, options, defaultValueIndex);
         return this;
     }

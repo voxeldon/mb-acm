@@ -1,0 +1,22 @@
+{
+	"format_version": "1.20.30",
+	"minecraft:item": {
+		"description": {
+			"identifier": "acm:tool",
+			"menu_category": {
+				"category": "equipment",
+				"group": "itemGroup.name.sword"
+			}
+		},
+		"components": {
+			"minecraft:damage": 0,
+			"minecraft:max_stack_size": 1,
+            "minecraft:hand_equipped": true,
+			"minecraft:can_destroy_in_creative": false,
+            "minecraft:icon": {"texture": "compass_item"},
+			"minecraft:food": {"nutrition": 0,"saturation_modifier": 0,"can_always_eat": true},
+			"minecraft:use_duration": {"value": 999},
+			"minecraft:cooldown": { "duration": 1.0,"category": "acm:tool" }
+		}
+	}
+}

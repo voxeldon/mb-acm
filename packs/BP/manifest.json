@@ -17,7 +17,7 @@
         "language": "javascript",
         "uuid": "a6ed6dcb-cf00-4a19-8b16-2e56a984d02a",
         "version": [0, 0, 1],
-        "entry": "scripts/index.js"
+        "entry": "scripts/acm/index.js"
     }
   ],
   "metadata": {

@@ -1,9 +1,66 @@
 pack.name=MB-ACM
 pack.description=Minecraft Bedrock Addon Configuration Manager.
 
+item.acm:tool=§6ACM TOOL
 
-acm.vxl.test_pack=Test Pack!
-acm.vxl.test=Bool Setting
-acm.vxl.test2=Range Setting
+acm.initialize_start=§4Addon Configuration Manager Starting
+acm.await_addons=§6Awaiting Addons...
+acm.loaded_addon=§2Loaded:§r 
+acm.header=§l§6A.C.M§r
+acm.menu_header=§l§5ADDON CONFIGURATION MANAGER§r
+acm.menu_body=Select an Addon.
 
-acm.vxl.test_pack2=§5Test Pack Two!
+acm.team0.pack0=Test Pack0!
+acm.team0.pack0.bool0=Bool Setting
+acm.team0.pack0.range0=Range Setting
+acm.team0.pack0.choice0=Choice Setting
+
+acm.team1.pack1=Test Pack1!
+acm.team1.pack1.bool1=Bool Setting
+acm.team1.pack1.range1=Range Setting
+acm.team1.pack1.choice1=Choice Setting
+
+acm.team2.pack2=Test Pack2!
+acm.team2.pack2.bool2=Bool Setting
+acm.team2.pack2.range2=Range Setting
+acm.team2.pack2.choice2=Choice Setting
+
+acm.team3.pack3=Test Pack3!
+acm.team3.pack3.bool3=Bool Setting
+acm.team3.pack3.range3=Range Setting
+acm.team3.pack3.choice3=Choice Setting
+
+acm.team4.pack4=Test Pack4!
+acm.team4.pack4.bool4=Bool Setting
+acm.team4.pack4.range4=Range Setting
+acm.team4.pack4.choice4=Choice Setting
+
+acm.team5.pack5=Test Pack5!
+acm.team5.pack5.bool5=Bool Setting
+acm.team5.pack5.range5=Range Setting
+acm.team5.pack5.choice5=Choice Setting
+
+acm.team6.pack6=Test Pack6!
+acm.team6.pack6.bool6=Bool Setting
+acm.team6.pack6.range6=Range Setting
+acm.team6.pack6.choice6=Choice Setting
+
+acm.team7.pack7=Test Pack7!
+acm.team7.pack7.bool7=Bool Setting
+acm.team7.pack7.range7=Range Setting
+acm.team7.pack7.choice7=Choice Setting
+
+acm.team8.pack8=Test Pack8!
+acm.team8.pack8.bool8=Bool Setting
+acm.team8.pack8.range8=Range Setting
+acm.team8.pack8.choice8=Choice Setting
+
+acm.team9.pack9=Test Pack9!
+acm.team9.pack9.bool9=Bool Setting
+acm.team9.pack9.range9=Range Setting
+acm.team9.pack9.choice9=Choice Setting
+
+acm.team10.pack10=Test Pack10!
+acm.team10.pack10.bool10=Bool Setting
+acm.team10.pack10.range10=Range Setting
+acm.team10.pack10.choice10=Choice Setting
