@@ -1,8 +1,6 @@
-import { cls} from './spec/lib';
+import { SDB } from './spec/lib';
 import { AddonData, DATA_PREFIX } from './global';
 import { ScoreboardObjective} from '@minecraft/server';
-
-const DB = new cls.ADB();
 
 class RegisterConfigurationData {
 
@@ -13,7 +11,7 @@ class RegisterConfigurationData {
     }
 
     private static async collectWorldData(): Promise<ScoreboardObjective[]>{
-        return await DB.getAllDB() || [];
+        return SDB.getAllDb() || [];
     }
 
     private static async registerAddonData(){
@@ -35,7 +33,7 @@ class RegisterConfigurationData {
             const parts = id.split('.');
             const teamName = parts[1];
             const packName = parts[2];
-            const scores = await DB.getAllKeys(id);
+            const scores = SDB.getAllKeys(id);
 
             const settings = scores.map(score => {
                 const keyParts = score.key.match(/(.*?)\((.*?)\)/);

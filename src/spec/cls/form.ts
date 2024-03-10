@@ -145,7 +145,7 @@ class ModalForm {
      * @param defaultValue {string} [optional] - The default value pre-filled in the text field.
      * @returns {ModalForm} - The instance of this ModalForm for method chaining.
      */
-    addTextField(label: string | RawMessage, placeholder: string = '', defaultValue: string = ''): ModalForm {
+    addTextField(label: string | RawMessage, placeholder: string = '' , defaultValue: string = ''): ModalForm {
         this.form.textField(label, placeholder, defaultValue);
         return this;
     }

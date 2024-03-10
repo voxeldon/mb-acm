@@ -7,9 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { cls } from './spec/lib';
+import { SDB } from './spec/lib';
 import { DATA_PREFIX } from './global';
-const DB = new cls.ADB();
 class RegisterConfigurationData {
     static init() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -20,7 +19,7 @@ class RegisterConfigurationData {
     }
     static collectWorldData() {
         return __awaiter(this, void 0, void 0, function* () {
-            return (yield DB.getAllDB()) || [];
+            return SDB.getAllDb() || [];
         });
     }
     static registerAddonData() {
@@ -45,7 +44,7 @@ class RegisterConfigurationData {
                 const parts = id.split('.');
                 const teamName = parts[1];
                 const packName = parts[2];
-                const scores = yield DB.getAllKeys(id);
+                const scores = SDB.getAllKeys(id);
                 const settings = scores.map(score => {
                     const keyParts = score.key.match(/(.*?)\((.*?)\)/);
                     return {

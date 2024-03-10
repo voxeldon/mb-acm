@@ -1,63 +1,54 @@
-import { cls } from './spec/lib';
-import { system, TicksPerSecond } from '@minecraft/server';
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import { cls, SDB } from './spec/lib';
+import { LANG_KEY } from './global';
 const DATA_PREFIX = "acm";
-const BATCH_SIZE = 5;
-const FORM_HEADER = cls.CacheRawText.processes("acm.menu_header");
-const FORM_BODY = cls.CacheRawText.processes("acm.menu_body");
 class ConfigurationUiManager {
-    constructor(player, addonData) {
-        this.DB = new cls.ADB();
-        this.player = player;
+    constructor(addonData) {
         this.addonData = addonData;
-        this.cacheAddonTranslations();
     }
-    cacheAddonTranslations() {
-        this.addonData.forEach(addon => {
-            const baseKey = `${DATA_PREFIX}.${addon.id}`;
-            cls.CacheRawText.processes(baseKey);
-            addon.settings.forEach(setting => {
-                const settingKey = `${baseKey}.${setting.name}`;
-                cls.CacheRawText.processes(settingKey);
-            });
+    handle_form(player) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const actionForm = this.createActionForm();
+            this.addonData.forEach(addon => this.createButtonForAddon(actionForm, addon));
+            this.showActionFormToPlayer(actionForm, player);
         });
     }
-    handle_form() {
+    createActionForm() {
         const actionForm = new cls.ActionForm();
-        actionForm.setTitle(FORM_HEADER).setBody(FORM_BODY);
-        // Define a function to process a batch of addons
-        const processBatch = (startIndex, batchSize) => {
-            const endIndex = Math.min(startIndex + batchSize, this.addonData.length);
-            const batch = this.addonData.slice(startIndex, endIndex);
-            batch.forEach(addon => {
-                const { pack_name: packName, team_name: teamName } = addon.meta;
-                const iconPath = `_${DATA_PREFIX}/${teamName}/${packName}/pack_icon.png`;
-                const buttonLabel = cls.CacheRawText.processes(`${DATA_PREFIX}.${teamName}.${packName}`);
-                actionForm.addButton(buttonLabel, iconPath);
-            });
-            if (endIndex < this.addonData.length) {
-                // Schedule the next batch
-                system.runTimeout(() => processBatch(endIndex, batchSize), TicksPerSecond * 2); // 10 tick delay
-            }
-            else {
-                actionForm.show(this.player).then(result => {
-                    if (result.type === 'selected') {
-                        const selectedAddon = this.addonData[result.selection];
-                        this.generate_modal_form(selectedAddon);
-                    }
-                });
-            }
-        };
-        processBatch(0, BATCH_SIZE);
+        actionForm.setTitle(LANG_KEY.MENU_HEADER).setBody(LANG_KEY.MENU_BODY);
+        return actionForm;
     }
-    generate_modal_form(addon) {
-        if (!this.player || !addon)
+    createButtonForAddon(actionForm, addon) {
+        const { pack_name: packName, team_name: teamName } = addon.meta;
+        const iconPath = `_${DATA_PREFIX}/${teamName}/${packName}/pack_icon.png`;
+        const buttonLabel = `${DATA_PREFIX}.${teamName}.${packName}`;
+        actionForm.addButton(buttonLabel, iconPath);
+    }
+    showActionFormToPlayer(actionForm, player) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield actionForm.show(player);
+            if (result.type === 'selected') {
+                const selectedAddon = this.addonData[result.selection];
+                this.generate_modal_form(player, selectedAddon);
+            }
+        });
+    }
+    generate_modal_form(player, addon) {
+        if (!player || !addon)
             return;
         const modalForm = new cls.ModalForm();
-        const formTitleKey = `${DATA_PREFIX}.${addon.meta.team_name}.${addon.meta.pack_name}`;
-        modalForm.setTitle(cls.CacheRawText.processes(formTitleKey));
+        const formTitle = `${DATA_PREFIX}.${addon.meta.team_name}.${addon.meta.pack_name}`;
+        modalForm.setTitle(formTitle);
         addon.settings.forEach(setting => {
-            const settingKey = `${formTitleKey}.${setting.name}`;
-            const settingLabel = cls.CacheRawText.processes(settingKey);
+            const settingLabel = `${formTitle}.${setting.name}`;
             if (setting.type === 'bool') {
                 modalForm.addToggle(settingLabel, setting.value !== 0);
             }
@@ -74,18 +65,38 @@ class ConfigurationUiManager {
                 const defaultValueIndex = Math.max(0, Math.min(options.length - 1, setting.value));
                 modalForm.addDropdown(settingLabel, options, defaultValueIndex);
             }
+            else if (setting.type.startsWith('input')) {
+                modalForm.addTextField(settingLabel, this.getInputField(setting.key));
+            }
         });
-        modalForm.show(this.player).then(result => {
+        modalForm.show(player).then(result => {
             if (result.type === 'submitted') {
                 result.values.forEach((value, index) => {
                     const setting = addon.settings[index];
                     const key = `${setting.key}`;
+                    if (typeof value === "string") {
+                        SDB.removeKey(addon.id, key);
+                        const newKey = this.parseInputField(key, value);
+                        setting.key = newKey;
+                        SDB.setKey(addon.id, newKey, 0);
+                        return;
+                    }
                     const valueToUpdate = typeof value === "boolean" ? (value ? 1 : 0) : value;
-                    this.DB.setKey(addon.id, key, valueToUpdate);
+                    SDB.setKey(addon.id, key, valueToUpdate);
                     setting.value = valueToUpdate;
                 });
             }
         });
+    }
+    parseInputField(key, value) {
+        const originalText = key.replace(/\([^)]*\)/, '');
+        const newText = `${originalText}(input[${value}])`;
+        return newText;
+    }
+    getInputField(key) {
+        const match = key.match(/\[([^]+)\]/);
+        const extractedText = match ? match[1] : '';
+        return extractedText;
     }
 }
 export { ConfigurationUiManager };

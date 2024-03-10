@@ -1,2 +1,3 @@
 import { RawText } from "./raw_text";
-export { RawText };
+import { measureTime } from "./common_utilities";
+export { RawText, measureTime };

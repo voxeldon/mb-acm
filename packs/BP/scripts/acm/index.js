@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { LANG_KEY } from './global';
 import { RawText } from './spec/lib';
 import { ConfigurationUiManager } from './ui_manager';
-import { world, system, TicksPerSecond } from '@minecraft/server';
+import { world } from '@minecraft/server';
 import { RegisterConfigurationData } from './register_config_data';
 const GAME_TOOL = "acm:tool";
 class AddonConfigurationManager {
@@ -18,45 +18,49 @@ class AddonConfigurationManager {
         this.registeredAddonData = registeredAddonData;
     }
     generateAddonList() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const addonList = [];
-            for (const addonData of this.registeredAddonData) {
-                addonList.push(addonData.id);
-            }
-            return addonList;
-        });
+        const addonList = [];
+        for (const addonData of this.registeredAddonData) {
+            addonList.push(addonData.id);
+        }
+        return addonList;
     }
     generateLoadMessage() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const addonList = yield this.generateAddonList();
-            let rawMessage = LANG_KEY.LOAD_MSG_HEADER;
-            for (const addonId in addonList) {
-                rawMessage = RawText.MESSAGE(rawMessage, LANG_KEY.ON_ADDON_LOADED, RawText.TRANSLATE(addonList[addonId]), LANG_KEY.NEW_LINE);
-            }
-            return rawMessage;
-        });
+        const addonList = this.generateAddonList();
+        let rawMessage = LANG_KEY.LOAD_MSG_HEADER;
+        for (const addonId in addonList) {
+            rawMessage = RawText.MESSAGE(rawMessage, LANG_KEY.ON_ADDON_LOADED, RawText.TRANSLATE(addonList[addonId]), LANG_KEY.NEW_LINE);
+        }
+        return rawMessage;
     }
     registerEventHandlers() {
-        return __awaiter(this, void 0, void 0, function* () {
-            world.afterEvents.itemUse.subscribe(event => {
-                if (event.itemStack.typeId !== GAME_TOOL || !this.registeredAddonData)
-                    return;
-                const UiManager = new ConfigurationUiManager(event.source, this.registeredAddonData);
-                UiManager.handle_form();
-            });
+        const UiManager = new ConfigurationUiManager(this.registeredAddonData);
+        world.afterEvents.itemUse.subscribe(event => {
+            if (event.itemStack.typeId !== GAME_TOOL || !this.registeredAddonData)
+                return;
+            UiManager.handle_form(event.source);
         });
+    }
+    sendLoadMessage() {
+        const addonMessage = this.generateLoadMessage();
+        world.sendMessage(addonMessage);
     }
     run() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const addonMessage = yield this.generateLoadMessage();
-            world.sendMessage(addonMessage);
-            yield this.registerEventHandlers();
-        });
+        this.sendLoadMessage();
+        this.registerEventHandlers();
     }
 }
-system.runTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
-    const registeredAddonData = yield RegisterConfigurationData.init();
-    const ACM = new AddonConfigurationManager(registeredAddonData);
-    yield ACM.run();
-}), TicksPerSecond * 10);
-world.sendMessage(LANG_KEY.ON_START);
+function init() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const registeredAddonData = yield RegisterConfigurationData.init();
+        const ACM = new AddonConfigurationManager(registeredAddonData);
+        ACM.run();
+    });
+}
+const itemUse = world.afterEvents.itemUse;
+itemUse.subscribe(run);
+function run(event) {
+    world.sendMessage(LANG_KEY.ON_START);
+    if (event.itemStack.typeId !== GAME_TOOL)
+        return;
+    init();
+}
