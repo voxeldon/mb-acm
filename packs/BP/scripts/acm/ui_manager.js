@@ -66,25 +66,29 @@ class ConfigurationUiManager {
                 modalForm.addDropdown(settingLabel, options, defaultValueIndex);
             }
             else if (setting.type.startsWith('input')) {
-                modalForm.addTextField(settingLabel, this.getInputField(setting.key));
+                modalForm.addTextField(settingLabel, this.getInputField(setting.key), this.getInputField(setting.key));
             }
         });
         modalForm.show(player).then(result => {
             if (result.type === 'submitted') {
+                const resultMapping = {};
                 result.values.forEach((value, index) => {
                     const setting = addon.settings[index];
-                    const key = `${setting.key}`;
+                    resultMapping[setting.name] = value;
                     if (typeof value === "string") {
-                        SDB.removeKey(addon.id, key);
-                        const newKey = this.parseInputField(key, value);
+                        // Use setting.key instead of the undefined 'key'
+                        SDB.removeKey(addon.id, setting.key); // Corrected line
+                        const newKey = this.parseInputField(setting.key, value);
                         setting.key = newKey;
                         SDB.setKey(addon.id, newKey, 0);
-                        return;
                     }
-                    const valueToUpdate = typeof value === "boolean" ? (value ? 1 : 0) : value;
-                    SDB.setKey(addon.id, key, valueToUpdate);
-                    setting.value = valueToUpdate;
+                    else {
+                        const valueToUpdate = typeof value === "boolean" ? (value ? 1 : 0) : value;
+                        SDB.setKey(addon.id, setting.key, valueToUpdate);
+                        setting.value = valueToUpdate;
+                    }
                 });
+                player.runCommand(`/scriptevent ${addon.id.replace('acm.', 'acm:')} ${JSON.stringify(resultMapping)}`);
             }
         });
     }

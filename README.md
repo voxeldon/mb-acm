@@ -1,26 +1,17 @@
-# mb-acm
- Minecraft Bedrock Addon Configuration Manager
+# Minecraft Bedrock Addon Configuration Manager (ACM)
 
+<p align="center">
+  <img src="packs\BP\pack_icon.png" alt="ACM Logo"/>
+</p>
 
-## Setup
-Make a single scoreboard in the following format to house all your pack settings.
+The Addon Configuration Manager (ACM) for Minecraft Bedrock is designed to streamline the configuration process for addons. It offers developers an efficient way to design configuration menus through a simple setup, utilizing Minecraft's scoreboard system and following specific syntax rules.
 
-`acm.team_name.pack_name`
+---
 
-``
+## For Users
 
-Define the display name in your lang file.
+### [User Guide](res\guide.md)
 
-`acm.my_team.test_pack=Test Pack!`
+## For Developers
 
-Settings can be defined with scores
-
-`scoreboard players add "my_setting(bool)" default_value(use 0 or 1)` for a toggle
-
-`scoreboard players add "my_setting(range[min, max, step]) default_value"` for a toggle
-
-Define the display name for settings in your lang file 
-
-```
-    acm.team_name.my_setting=Setting Display Name
-```
+### [Documentation](res\docs.md)

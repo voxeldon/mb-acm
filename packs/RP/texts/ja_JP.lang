@@ -1,0 +1,23 @@
+pack.name=MB-ACM
+pack.description=Minecraft Bedrock アドオン構成マネージャー。 (§4英語以外のテキストは自動翻訳されています。言語に欠陥があることに気付いた場合は、修正のために報告してください)
+
+item.acm:tool=§6ACMツール
+
+acm.initialize_start=§4アドオン構成マネージャーの起動
+acm.await_addons=§6アドオンを待っています...
+acm.loaded_addon=§2ロード済み:§r
+acm.header=§l§6A.C.M§r
+acm.menu_header=§l§5アドオン構成マネージャー§r
+acm.menu_body=アドオンを選択します。
+acm.invalid_perms=§4このツールを使用する権限がありません。
+
+acm.help_header=§2~~~§l§2A§f.§6C§f.§4M§r§2~~~§r
+acm.help_help=§3- acm:ヘルプ §6| §rコマンドの一覧を表示します。
+acm.help_start=§3- acm:開始 §6| §rACMを起動します。
+acm.help_tool=§3- acm:ツール §6| §r呼び出し側プレーヤーに ACM トリガー ツールを提供します。
+acm.help_show=§3- acm:ショー §6| §rACM メニューを開きます。
+acm.help_footer=§2~~~~~~~~~§r
+
+acm.vxl.acm_config=§l§2A§f.§6C§f.§4M§r
+acm.vxl.acm_config.require_tag=§l§3Require Tag §r§o(設定メニューにアクセスするにはタグが必要)
+acm.vxl.acm_config.tag_id=§l§2タグID §r§o(requireタグを使用する場合)

@@ -1,0 +1,23 @@
+pack.name=MB-ACM
+pack.description=Minecraft Bedrock Addon-configuratiemanager. (§4Niet-Engelse tekst wordt automatisch vertaald. Als u een fout in uw taal opmerkt, meld dit dan ter correctie)
+
+item.acm:tool=§6ACM-TOOL
+
+acm.initialize_start=§4Addon Configuration Manager starten
+acm.await_addons=§6In afwachting van add-ons...
+acm.loaded_addon=§2Geladen:§r
+acm.header=§l§6A.C.M§r
+acm.menu_header=§l§5ADDON CONFIGURATIEBEHEER§r
+acm.menu_body=Selecteer een add-on.
+acm.invalid_perms=§4Je hebt geen toestemming om deze tool te gebruiken.
+
+acm.help_header=§2~~~§l§2A§f.§6C§f.§4M§r§2~~~§r
+acm.help_help=§3- acm:help §6| §rToont een lijst met opdrachten.
+acm.help_start=§3- acm:start §6| §rStart ACM.
+acm.help_tool=§3- acm:tool §6| §rGeeft de aanroepende speler de ACM-triggertool.
+acm.help_show=§3- acm:toon §6| §rOpen het ACM-menu.
+acm.help_footer=§2~~~~~~~~~§r
+
+acm.vxl.acm_config=§l§2A§f.§6C§f.§4M§r
+acm.vxl.acm_config.require_tag=§l§3Tag vereisen §r§o(Tag vereisen voor toegang tot configuratiemenu)
+acm.vxl.acm_config.tag_id=§l§2Tag-ID §r§o(Als u een tag gebruikt)

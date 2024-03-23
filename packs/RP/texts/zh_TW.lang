@@ -1,0 +1,23 @@
+pack.name=MB-ACM
+pack.description=Minecraft 基岩插件配置管理器。 （§4非英文文本是自动翻译的，如果您发现您的语言有缺陷，请报告以进行更正）
+
+item.acm:tool=§6ACM 工具
+
+acm.initialize_start=§4插件配置管理器启动
+acm.await_addons=§6等待插件...
+acm.loaded_addon=§2已加载：§r
+acm.header=§l§6A.C.M§r
+acm.menu_header=§l§5插件配置管理器§r
+acm.menu_body=选择一个插件。
+acm.invalid_perms=§4您无权使用此工具。
+
+acm.help_header=§2~~~§l§2A§f.§6C§f.§4M§r§2~~~§r
+acm.help_help=§3- acm:帮助 §6| §r显示命令列表。
+acm.help_start=§3- acm:开始 §6| §r启动 ACM。
+acm.help_tool=§3- acm:工具 §6| §r为呼叫玩家提供 ACM 触发工具。
+acm.help_show=§3- acm:显示 §6| §r打开 ACM 菜单。
+acm.help_footer=§2~~~~~~~~~§r
+
+acm.vxl.acm_config=§l§2A§f.§6C§f.§4M§r
+acm.vxl.acm_config.require_tag=§l§3需要标签§r§o（需要标签才能访问配置菜单）
+acm.vxl.acm_config.tag_id=§l§2标签 ID §r§o（如果使用 require 标签）

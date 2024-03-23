@@ -40,14 +40,14 @@ class ConfigurationUiManager {
 
     public generate_modal_form(player: Player, addon: AddonData) {
         if (!player || !addon) return;
-
+    
         const modalForm = new cls.ModalForm();
         const formTitle = `${DATA_PREFIX}.${addon.meta.team_name}.${addon.meta.pack_name}`;
         modalForm.setTitle(formTitle);
-
+    
         addon.settings.forEach(setting => {
             const settingLabel = `${formTitle}.${setting.name}`;
-
+    
             if (setting.type === 'bool') {
                 modalForm.addToggle(settingLabel, setting.value !== 0);
             } else if (setting.type.startsWith('range')) {
@@ -62,30 +62,34 @@ class ConfigurationUiManager {
                 const defaultValueIndex = Math.max(0, Math.min(options.length - 1, setting.value));
                 modalForm.addDropdown(settingLabel, options, defaultValueIndex);
             } else if (setting.type.startsWith('input')) {
-                modalForm.addTextField(settingLabel,this.getInputField(setting.key));
+                modalForm.addTextField(settingLabel,this.getInputField(setting.key),this.getInputField(setting.key));
             }
         });
-
+    
         modalForm.show(player).then(result => {
             if (result.type === 'submitted') {
-                result.values.forEach((value: boolean | number, index: number) => {
+                const resultMapping: { [key: string]: boolean | number | string } = {};
+                result.values.forEach((value: boolean | number | string, index: number) => {
                     const setting = addon.settings[index];
-                    const key = `${setting.key}`;
-
+                    resultMapping[setting.name] = value;
+        
                     if (typeof value === "string") {
-                        SDB.removeKey(addon.id, key);
-                        const newKey = this.parseInputField(key, value);
-                        setting.key = newKey;
+                        // Use setting.key instead of the undefined 'key'
+                        SDB.removeKey(addon.id, setting.key); // Corrected line
+                        const newKey = this.parseInputField(setting.key, value);
+                        setting.key = newKey; 
                         SDB.setKey(addon.id, newKey, 0);
-                        return
+                    } else {
+                        const valueToUpdate = typeof value === "boolean" ? (value ? 1 : 0) : value;
+                        SDB.setKey(addon.id, setting.key, valueToUpdate);
+                        setting.value = valueToUpdate;
                     }
-
-                    const valueToUpdate = typeof value === "boolean" ? (value ? 1 : 0) : value;
-                    SDB.setKey(addon.id, key, valueToUpdate);
-                    setting.value = valueToUpdate;
                 });
+        
+                player.runCommand(`/scriptevent ${addon.id.replace('acm.', 'acm:')} ${JSON.stringify(resultMapping)}`);
             }
         });
+        
     }
 
     private parseInputField(key: string, value: string): string {

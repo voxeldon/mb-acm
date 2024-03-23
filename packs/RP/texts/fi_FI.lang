@@ -1,0 +1,23 @@
+pack.name=MB-ACM
+pack.description=Minecraft Bedrock Addon Configuration Manager. (§4 Muu kuin englanninkielinen teksti käännetään automaattisesti. Jos huomaat kielessäsi virheen, ilmoita siitä korjausta varten)
+
+item.acm:tool=§6ACM-TYÖKALU
+
+acm.initialize_start=§4Addon Configuration Manager käynnistyy
+acm.await_addons=§6 Odotetaan lisäyksiä...
+acm.loaded_addon=§2Ladattu:§r
+acm.header=§l§6A.C.M§r
+acm.menu_header=§l§5 LISÄÄ KONFIGUROINTIHALLINTA§r
+acm.menu_body=Valitse lisäosa.
+acm.invalid_perms=§4Sinulla ei ole lupaa käyttää tätä työkalua.
+
+acm.help_header=§2~~~§l§2A§f.§6C§f.§4M§r§2~~~§r
+acm.help_help=§3- acm:help §6| §rNäyttää luettelon komentoista.
+acm.help_start=§3- acm:aloitus §6| §rKäynnistä ACM.
+acm.help_tool=§3- acm:työkalu §6| §rAntaa kutsuvalle pelaajalle ACM-laukaisutyökalun.
+acm.help_show=§3- acm:show §6| §rAvaa ACM-valikko.
+acm.help_footer=§2~~~~~~~~~§r
+
+acm.vxl.acm_config=§l§2A§f.§6C§f.§4M§r
+acm.vxl.acm_config.require_tag=§l§3Vaadi tunniste §r§o(Vaadi tunniste konfigurointivalikkoon pääsemiseksi)
+acm.vxl.acm_config.tag_id=§l§2Tagin tunnus §r§o(jos käytät vaadita tunnistetta)

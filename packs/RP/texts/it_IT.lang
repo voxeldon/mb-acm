@@ -1,0 +1,23 @@
+pack.name=MB-ACM
+pack.description=Gestore configurazione componente aggiuntivo Minecraft Bedrock. (§4Il testo non inglese è tradotto automaticamente, se noti un difetto nella tua lingua segnalalo per la correzione)
+
+item.acm:tool=§STRUMENTO 6ACM
+
+acm.initialize_start=§4Avvio di Gestione configurazione componenti aggiuntivi
+acm.await_addons=§6In attesa dei componenti aggiuntivi...
+acm.loaded_addon=§2Caricato:§r
+acm.header=§l§6A.C.M§r
+acm.menu_header=§l§5GESTIONE CONFIGURAZIONE ADDON§r
+acm.menu_body=Seleziona un componente aggiuntivo.
+acm.invalid_perms=§4Non hai l'autorizzazione per utilizzare questo strumento.
+
+acm.help_header=§2~~~§l§2A§f.§6C§f.§4M§r§2~~~§r
+acm.help_help=§3- acm:aiuto §6| §rVisualizza un elenco di comandi.
+acm.help_start=§3- acm:inizio §6| §rAvvia ACM.
+acm.help_tool=§3- acm:utensile §6| §rFornisce al giocatore chiamante lo strumento di attivazione ACM.
+acm.help_show=§3- acm:mostra §6| §rAprire il menu ACM.
+acm.help_footer=§2~~~~~~~~~§r
+
+acm.vxl.acm_config=§l§2A§f.§6C§f.§4M§r
+acm.vxl.acm_config.require_tag=§l§3Richiedi tag §r§o(Richiedi tag per accedere al menu di configurazione)
+acm.vxl.acm_config.tag_id=§l§2ID tag §r§o(Se si utilizza il tag richiesto)

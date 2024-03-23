@@ -1,0 +1,23 @@
+pack.name=MB-ACM
+pack.description=Manajer Konfigurasi Addon Batuan Dasar Minecraft. (§4Teks non-bahasa Inggris diterjemahkan secara otomatis, jika Anda melihat ada kekurangan dalam bahasa Anda, harap laporkan untuk koreksi)
+
+item.acm:tool=ALAT §6ACM
+
+acm.initialize_start=§4Manajer Konfigurasi Addon Dimulai
+acm.await_addons=§6Menunggu Tambahan...
+acm.loaded_addon=§2Dimuat:§r
+acm.header=§l§6A.C.M§r
+acm.menu_header=§l§5MANAJER KONFIGURASI TAMBAHKAN§r
+acm.menu_body=Pilih Addon.
+acm.invalid_perms=§4Anda tidak memiliki izin untuk menggunakan alat ini.
+
+acm.help_header=§2~~~§l§2A§f.§6C§f.§4M§r§2~~~§r
+acm.help_help=§3- acm:bantuan §6| §rMenampilkan daftar perintah.
+acm.help_start=§3- acm:mulai §6| §rMulai ACM.
+acm.help_tool=§3- acm:alat §6| §rMemberikan alat pemicu ACM kepada pemain yang memanggil.
+acm.help_show=§3- acm:tunjukkan §6| §rBuka menu ACM.
+acm.help_footer=§2~~~~~~~~~~§r
+
+acm.vxl.acm_config=§l§2A§f.§6C§f.§4M§r
+acm.vxl.acm_config.require_tag=§l§3Memerlukan Tag §r§o(Memerlukan tag untuk mengakses menu konfigurasi)
+acm.vxl.acm_config.tag_id=§l§2Id Tag §r§o(Jika menggunakan tag yang diperlukan)
