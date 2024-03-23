@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { cls, SDB } from './spec/lib';
+import { cls, RawText, SDB } from './spec/lib';
 import { LANG_KEY } from './global';
 const DATA_PREFIX = "acm";
 class ConfigurationUiManager {
@@ -45,7 +45,7 @@ class ConfigurationUiManager {
         if (!player || !addon)
             return;
         const modalForm = new cls.ModalForm();
-        const formTitle = `${DATA_PREFIX}.${addon.meta.team_name}.${addon.meta.pack_name}`;
+        const formTitle = addon.id;
         modalForm.setTitle(formTitle);
         addon.settings.forEach(setting => {
             const settingLabel = `${formTitle}.${setting.name}`;
@@ -58,7 +58,7 @@ class ConfigurationUiManager {
                 const min = split[0];
                 const max = split[1];
                 const step = split[2];
-                modalForm.addSlider(settingLabel, min, max, step, setting.value);
+                modalForm.addSlider(RawText.TRANSLATE(settingLabel), min, max, step, setting.value);
             }
             else if (setting.type.startsWith('choice')) {
                 const options = setting.type.replace('choice[', '').replace(']', '').split(',').map(option => option.trim());

@@ -10,7 +10,9 @@
   "author": "DonTheDev",
   "license": "ISC",
   "dependencies": {
-    "@minecraft/server": "^1.8.0",
-    "@minecraft/server-ui": "^1.1.0"
+    "@minecraft/common": "^1.2.0",
+    "@minecraft/server": "^1.9.0",
+    "@minecraft/server-ui": "^1.1.0",
+    "@minecraft/vanilla-data": "^1.20.70"
   }
 }

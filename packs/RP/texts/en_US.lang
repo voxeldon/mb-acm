@@ -21,3 +21,10 @@ acm.help_footer=§2~~~~~~~~~§r
 acm.vxl.acm_config=§l§2A§f.§6C§f.§4M§r
 acm.vxl.acm_config.require_tag=§l§3Require Tag §r§o(Require tag to access config menu)
 acm.vxl.acm_config.tag_id=§l§2Tag Id §r§o(If using require tag)
+
+
+acm.vxl.test=Test Pack
+acm.vxl.test.bool_test=Bool Test
+acm.vxl.test.range_test=Range Test
+acm.vxl.test.choice_test=Choice Test
+acm.vxl.test.input_test=Input Test

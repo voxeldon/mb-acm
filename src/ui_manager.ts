@@ -42,7 +42,7 @@ class ConfigurationUiManager {
         if (!player || !addon) return;
     
         const modalForm = new cls.ModalForm();
-        const formTitle = `${DATA_PREFIX}.${addon.meta.team_name}.${addon.meta.pack_name}`;
+        const formTitle = addon.id;
         modalForm.setTitle(formTitle);
     
         addon.settings.forEach(setting => {
@@ -51,12 +51,12 @@ class ConfigurationUiManager {
             if (setting.type === 'bool') {
                 modalForm.addToggle(settingLabel, setting.value !== 0);
             } else if (setting.type.startsWith('range')) {
-                const rangeData = setting.type.replace('range', '').replace('[', '').replace(']', ''); // maybe handle split parsing in inital data set
+                const rangeData = setting.type.replace('range', '').replace('[', '').replace(']', ''); 
                 const split = rangeData.split(',').map(Number);
                 const min = split[0];
                 const max = split[1];
                 const step = split[2];
-                modalForm.addSlider(settingLabel, min, max, step, setting.value);
+                modalForm.addSlider(RawText.TRANSLATE(settingLabel), min, max, step, setting.value);
             } else if (setting.type.startsWith('choice')) {
                 const options = setting.type.replace('choice[', '').replace(']', '').split(',').map(option => option.trim());
                 const defaultValueIndex = Math.max(0, Math.min(options.length - 1, setting.value));
