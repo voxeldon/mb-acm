@@ -1,8 +1,6 @@
-import { world } from '@minecraft/server';
+import { ScoreboardIdentityType, ScoreboardScoreInfo, world } from '@minecraft/server';
 import { ScoreboardObjective, Scoreboard } from '@minecraft/server';
-
-type Database = ScoreboardObjective | undefined;
-type Key = { key: string; value: number };
+import { Database } from '..';
 
 class SDB {
     private static scoreboard: Scoreboard = world.scoreboard;
@@ -17,7 +15,7 @@ class SDB {
     }
 
     static removeDb(objectiveId: string): boolean {
-        const db = this.getDb(objectiveId);
+        const db: Database = this.getDb(objectiveId);
         if (!db) return false;
 
         try {
@@ -37,110 +35,114 @@ class SDB {
     }
 
     static getDbElseNew(objectiveId: string): Database {
-        let db = this.getDb(objectiveId);
+        let db: Database = this.getDb(objectiveId);
         if (!db) {
             const created = this.newDb(objectiveId);
             if (created) db = this.getDb(objectiveId);
         }
-        return db;
+        return db as Database;
     }
 
     static setKey(objectiveId: string, keyId: string, value: number = 0): boolean {
-        const db = this.getDb(objectiveId);
-        if (!db) return false;
-
-        db.setScore(keyId, value);
-        return true;
+        const db: Database = this.getDb(objectiveId);
+        if (db) {
+            db.setScore(keyId, value);
+            return true;
+        } else return false;
     }
 
     static addToKey(objectiveId: string, keyId: string, value: number = 0): boolean {
-        const db = this.getDb(objectiveId);
-        if (!db) return false;
-
-        db.addScore(keyId, value);
-        return true;
+        const db: Database = this.getDb(objectiveId);
+        if (db) {
+            db.addScore(keyId, value);
+            return true;
+        } else return false;
     }
 
     static removeKey(objectiveId: string, keyId: string): boolean {
-        const db = this.getDb(objectiveId);
-        if (!db) return false;
-
-        db.removeParticipant(keyId);
-        return true;
+        const db: Database = this.getDb(objectiveId);
+        if (db){
+            db.removeParticipant(keyId);
+            return true;
+        } else return false;
     }
 
-    static getKeyValue(objectiveId: string, keyId: string): number | undefined {
+    static getKeyValue(objectiveId: string, keyId: string): number {
         try {
-            const db = this.getDb(objectiveId);
+            const db: Database = this.getDb(objectiveId);
             const key = db?.getScore(keyId);
             if (key) return key;
-        } catch (error) {
-            return undefined;
-        }  
+        } catch (error) {};
+        return 0;
     }
 
-    static getAllKeys(dbID: string): Key[] {
-        const participants = this.scoreboard.getParticipants(); 
-        const result: Key[] = [];
-
-        const db = this.getDb(dbID);
-        if (!db) return result;
-
-        for (const participant of participants) {
-            const score = db.getScore(participant.displayName);
-            if (score !== undefined) {
-                result.push({ key: participant.displayName, value: score });
+    static getAllKeys(objectiveId: string): ScoreboardScoreInfo[] {
+        const result: ScoreboardScoreInfo[] = [];
+        const objective: Database = this.getDb(objectiveId);
+        if (objective) {
+            const scores: ScoreboardScoreInfo[] = objective.getScores()
+            if (scores) {
+                for (const score of scores) {
+                    if (score.participant.type === ScoreboardIdentityType.FakePlayer) {
+                        result.push(score);
+                    }
+                }
             }
         }
-
         return result;
     }
 
     static newUUID(): number {
-        const min = -2147483647;
-        const max = 2147483647;
+        const min: number = -2147483647;
+        const max: number = 2147483647;
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    static setArray(dbID: string, key: string, array: any[]): void {
-        const arrayString = JSON.stringify(array);
-        let uuid: number;
+    static setArray(dbID: string, key: string, array: any[]): boolean {
+        try {
+            const arrayString: string = JSON.stringify(array);
+            let uuid: number;
 
-        const existingUUID = this.getKeyValue(dbID, key);
-        uuid = existingUUID ?? this.newUUID();
+            const existingUUID: number = this.getKeyValue(dbID, key);
+            if (!existingUUID || existingUUID == 0) uuid = this.newUUID();
+            else uuid = existingUUID
 
-        this.removeKey(dbID, key);
-        const allKeysWithSameUUID = this.getAllKeys(dbID).filter(entry => entry.value === uuid);
-        for (const entry of allKeysWithSameUUID) {
-            this.removeKey(dbID, entry.key);
-        }
-        this.setKey(dbID, key, uuid);
-        this.setKey(dbID, arrayString, uuid);
+            this.removeKey(dbID, key);
+            const allKeysWithSameUUID: ScoreboardScoreInfo[] = this.getAllKeys(dbID).filter(entry => entry.score === uuid);
+
+            for (const entry of allKeysWithSameUUID) {
+                this.removeKey(dbID, entry.participant.displayName);
+            }
+            this.setKey(dbID, key, uuid);
+            this.setKey(dbID, arrayString, uuid);
+            return true
+        } catch (error) {console.warn(Error(`Error setting array @${dbID} | ${key} | ${error}`))}
+        return false
     }
 
-    static getArray(dbID: string, key: string): any[] | null {
-        const uuid = this.getKeyValue(dbID, key);
-        if (uuid === null) {
-            return null;
-        }
-        const allKeys = this.getAllKeys(dbID);
-        for (const entry of allKeys) {
-            if (entry.value === uuid && entry.key !== key) {
-                return JSON.parse(entry.key);
+    static getArray(dbID: string, key: string):[] {
+        const uuid: number = this.getKeyValue(dbID, key);
+        if (uuid !== undefined) {
+            const allKeys = this.getAllKeys(dbID);
+            for (const entry of allKeys) {
+                if (entry.score === uuid && entry.participant.displayName !== key) {
+                    return JSON.parse(entry.participant.displayName);
+                }
             }
         }
-        return null;
+        return [];
     }
 
-    static removeArray(dbID: string, key: string): void {
-        const uuid = this.getKeyValue(dbID, key);
-        if (uuid === null) {
-            return;
-        }
-        const allKeysWithSameUUID = this.getAllKeys(dbID).filter(entry => entry.value === uuid);
-        for (const entry of allKeysWithSameUUID) {
-            this.removeKey(dbID, entry.key);
-        }
+    static removeArray(dbID: string, key: string): boolean {
+        const uuid: number = this.getKeyValue(dbID, key);
+        if (uuid !== undefined) {
+            const allKeysWithSameUUID = this.getAllKeys(dbID).filter(entry => entry.score === uuid);
+            for (const entry of allKeysWithSameUUID) {
+                this.removeKey(dbID, entry.participant.displayName);
+            }
+            return true
+        } 
+        return false   
     }
 }
 

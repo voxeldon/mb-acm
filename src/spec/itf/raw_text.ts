@@ -48,4 +48,5 @@ const RawText = {
     SCORE,
     MESSAGE
 };
+
 export { RawText };

@@ -4,15 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build_tsc": "tsc",
+    "build_rego": "regolith run",
+    "build": "npm run build_tsc && npm run build_rego"
   },
   "keywords": [],
   "author": "DonTheDev",
   "license": "ISC",
   "dependencies": {
-    "@minecraft/common": "^1.2.0",
-    "@minecraft/server": "^1.9.0",
-    "@minecraft/server-ui": "^1.1.0",
-    "@minecraft/vanilla-data": "^1.20.70"
+    "@minecraft/server": "^1.10.0",
+    "@minecraft/server-ui": "^1.1.0"
   }
 }

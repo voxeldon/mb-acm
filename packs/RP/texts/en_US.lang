@@ -3,28 +3,34 @@ pack.description=Minecraft Bedrock Addon Configuration Manager.
 
 item.acm:tool=§6ACM TOOL
 
-acm.initialize_start=§4Addon Configuration Manager Starting
-acm.await_addons=§6Awaiting Addons...
-acm.loaded_addon=§2Loaded:§r 
-acm.header=§l§6A.C.M§r
-acm.menu_header=§l§5ADDON CONFIGURATION MANAGER§r
-acm.menu_body=Select an Addon.
-acm.invalid_perms=§4You don't have permission to use this tool.
+acm.title_short=§l§5A.C.M§r
+acm.title=§l§5ADDON CONFIGURATION MANAGER§r
+acm.title_info=§l§5Information
+acm.title_settings=§l§5Settings
+acm.body.header=§6Addon Configuration Manager
+acm.body.registered=§2Registered Addons: 
 
-acm.help_header=§2~~~§l§2A§f.§6C§f.§4M§r§2~~~§r
-acm.help_help=§3- acm:help  §6| §rDisplays a list of commands.
-acm.help_start=§3- acm:start §6| §rStart ACM.
-acm.help_tool=§3- acm:tool   §6| §rGives calling player the ACM trigger tool.
-acm.help_show=§3- acm:show  §6| §rOpen ACM menu.
-acm.help_footer=§2~~~~~~~~~§r
+acm.button.okay=Okay
+acm.button.information=Information
+acm.button.settings=Settings
+acm.button.return=Return To Menu
 
-acm.vxl.acm_config=§l§2A§f.§6C§f.§4M§r
-acm.vxl.acm_config.require_tag=§l§3Require Tag §r§o(Require tag to access config menu)
-acm.vxl.acm_config.tag_id=§l§2Tag Id §r§o(If using require tag)
+acm.util.addon_removed=Addon Removed
+acm.util.addon_removed_error=Error Removing Addon: 
+acm.util.valid_adress=Valid Addon Adress Found.
+acm.util.invalid_adress=Error Removing Addon, No longer exists.
 
 
-acm.vxl.test=Test Pack
-acm.vxl.test.bool_test=Bool Test
-acm.vxl.test.range_test=Range Test
-acm.vxl.test.choice_test=Choice Test
-acm.vxl.test.input_test=Input Test
+###Test Lang
+acm.vxl.acm_core.addon_id=§5ACM Core
+acm.vxl.acm_core.description=Customize your addons.
+acm.vxl.acm_core.addon_author=Donthedev
+
+acm.vxl.acm_core.info_header=Addon Configuration Manager
+acm.vxl.acm_core.info_author=Developed by Donthedev
+acm.vxl.acm_core.info_line0=ACM is designed to streamline the configuration process for addons.
+acm.vxl.acm_core.info_line1=It offers developers a simple way to design settings menus and a one stop location for users to customize their installed addons.
+
+acm.vxl.acm_core.require_tag=Require Tag
+acm.vxl.acm_core.tag_id=Tag Id
+acm.vxl.acm_core.require_tag_place_holder=Required tag id
