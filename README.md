@@ -16,5 +16,5 @@ The Addon Configuration Manager (ACM) for Minecraft Bedrock is designed to strea
 
 ## Documentation
 
-### [ACM Installation and User Guide](https://github.com/voxeldon/mb-acm/blob/main/docs/user_guide.md)
-### [ACM LIB Developer API](https://github.com/voxeldon/mb-acm/blob/main/docs/dev_guide.md)
+### [ACM Installation and User Guide](https://github.com/voxeldon/mb-acm/blob/main/documentation/user_guide.md)
+### [ACM LIB Developer API](https://github.com/voxeldon/mb-acm/blob/main/documentation/dev_guide.md)
