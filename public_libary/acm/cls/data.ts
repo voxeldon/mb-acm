@@ -30,33 +30,6 @@ class AcmData {
         }
     }
 
-    private delete_addon_adress(event: ScriptEventCommandMessageAfterEvent){
-        const event_message: string = event.message
-        let adress_id: string = ''
-        if (event_message.startsWith('acm.')) adress_id = event.message;
-        else adress_id = `acm.${event_message}`;
-        const global_data: ScoreboardObjective[] = this.scoreboard.getObjectives();
-        const player: Player = event.sourceEntity as Player;
-        if (global_data) {
-            for (const data of global_data) {
-                if (data.displayName.includes(event_message)) {
-                    player.sendMessage({translate: 'acm.util.valid_adress'});
-                    try {
-                        this.scoreboard.removeObjective(data.displayName);
-                        player.sendMessage({translate: 'acm.util.addon_removed'});
-                        return;
-                    } catch (error) {
-                        player.sendMessage({translate: 'acm.util.addon_removed_error'});
-                        player.sendMessage(JSON.stringify(error));
-                        return;
-                    }
-                }
-                else continue;
-            }
-            player.sendMessage({translate: 'acm.util.invalid_adress'});
-        }
-    }
-
     public generate_addon_data(addon_data: AddonData) {
         const input_settings = addon_data.settings;
         const input_information = addon_data.information;

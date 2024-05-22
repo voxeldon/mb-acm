@@ -169,3 +169,12 @@ acm.my_team.my_addon.my_option1=Choice B
 acm.my_team.my_addon.my_option2=Choice C
 acm.my_team.my_addon.my_text_field=My Text Field
 acm.my_team.my_addon.my_text_placeholder=My Placeholder Text
+```
+
+## Useful Commands
+
+While developing your settings configuration, you might encounter mistakes or want to add additional features. You can use the following command to delete your addon and start fresh:
+
+```
+/scriptevent acm:del my_team.my_addon
+```
