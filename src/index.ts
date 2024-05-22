@@ -29,8 +29,7 @@ const addon_data: AddonData = {
         'info_author','\n',
         'info_line0','\n',
         'info_line1'
-    ],
-    event_callback: 'acm:my_event'
+    ]
 }
 
 function on_data_changed(data: SettingData){

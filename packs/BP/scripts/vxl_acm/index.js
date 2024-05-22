@@ -23,8 +23,7 @@ const addon_data = {
         'info_author', '\n',
         'info_line0', '\n',
         'info_line1'
-    ],
-    event_callback: 'acm:my_event'
+    ]
 };
 function on_data_changed(data) {
     acm_interface.update_settings(data);
