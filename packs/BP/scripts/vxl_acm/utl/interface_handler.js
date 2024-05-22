@@ -69,6 +69,11 @@ class InterfaceHandler {
             button_index.set(slot_in_index, 'settings');
             slot_in_index += 1;
         }
+        if (VerifyData.has_type(addon_data, 'event')) {
+            actionForm.addButton(LANG.button.event, ICON_PATH.exclaim);
+            button_index.set(slot_in_index, 'event');
+            slot_in_index += 1;
+        }
         actionForm.addButton(LANG.button.return, ICON_PATH.return);
         button_index.set(slot_in_index, 'return');
         actionForm.setTitle(title)
@@ -83,6 +88,8 @@ class InterfaceHandler {
                 this.show_form_information(player, addon_data);
             else if (selected_button === 'settings')
                 this.show_form_settings(player, addon_data);
+            else if (selected_button === 'event')
+                this.run_event_callback(player, addon_data);
             else if (selected_button === 'return')
                 this.show_form_home(player);
         }).catch(error => { });
@@ -114,6 +121,17 @@ class InterfaceHandler {
         });
     }
     //Private Methods
+    run_event_callback(player, addon_data) {
+        var _a;
+        const dimension = player.dimension;
+        const participants = addon_data.getParticipants();
+        const event_string = (_a = participants.find(participant => participant.displayName.startsWith('event:'))) === null || _a === void 0 ? void 0 : _a.displayName;
+        if (!event_string)
+            return;
+        const event_data = event_string.replace('event:', '');
+        dimension.runCommand(`/scriptevent ${event_data}`);
+        console.warn(`/scriptevent ${event_data}`);
+    }
     update_addon_data(player, addon_data, new_data, widget_index) {
         const output_data = {};
         for (const widget of widget_index) {

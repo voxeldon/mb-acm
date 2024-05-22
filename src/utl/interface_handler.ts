@@ -1,4 +1,4 @@
-import { ItemStack, ItemUseAfterEvent, ItemUseAfterEventSignal, Player, RawMessage, ScoreboardObjective, world } from "@minecraft/server";
+import { Dimension, ItemStack, ItemUseAfterEvent, ItemUseAfterEventSignal, Player, RawMessage, ScoreboardIdentity, ScoreboardObjective, world } from "@minecraft/server";
 import { cls, RawText } from "../spec/lib";
 import { ActionForm } from "../spec/cls/form";
 import { ICON_PATH, LANG } from "../client";
@@ -89,6 +89,11 @@ class InterfaceHandler {
             button_index.set(slot_in_index, 'settings');
             slot_in_index += 1
         }
+        if (VerifyData.has_type(addon_data, 'event')) {
+            actionForm.addButton(LANG.button.event, ICON_PATH.exclaim);
+            button_index.set(slot_in_index, 'event');
+            slot_in_index += 1
+        }
         actionForm.addButton(LANG.button.return, ICON_PATH.return)
         button_index.set(slot_in_index, 'return');
         
@@ -103,8 +108,9 @@ class InterfaceHandler {
             const selected_slot = response.selection;
             const selected_button: string | undefined = button_index.get(selected_slot)// get string key based on selected_slot
             if (!selected_button) return
-            if (selected_button === 'info') this.show_form_information(player, addon_data)
-            else if (selected_button === 'settings') this.show_form_settings(player, addon_data)
+            if (selected_button === 'info') this.show_form_information(player, addon_data);
+            else if (selected_button === 'settings') this.show_form_settings(player, addon_data);
+            else if (selected_button === 'event') this.run_event_callback(player,addon_data);
             else if (selected_button === 'return') this.show_form_home(player);
           }).catch(error => {});   
     }
@@ -138,6 +144,16 @@ class InterfaceHandler {
     }
     
     //Private Methods
+
+    private run_event_callback(player:Player, addon_data: ScoreboardObjective){
+        const dimension: Dimension = player.dimension;
+        const participants: ScoreboardIdentity[] = addon_data.getParticipants()
+        const event_string: string | undefined = participants.find(participant => participant.displayName.startsWith('event:'))?.displayName;
+        if (!event_string) return;
+        const event_data: string = event_string.replace('event:','');
+        dimension.runCommand(`/scriptevent ${event_data}`);
+        console.warn(`/scriptevent ${event_data}`)
+    }
 
     private update_addon_data(player:Player, addon_data: ScoreboardObjective, new_data: any, widget_index: Map<number, string[]>){
         const output_data: { [key: string]: any } = {};

@@ -23,6 +23,15 @@ class AcmData {
         }
         else if (event_id.startsWith('acm:del'))
             this.delete_addon_adress(event);
+        else if (event_id.startsWith('acm:tool'))
+            this.give_tool(event);
+    }
+    give_tool(event) {
+        const player = event.sourceEntity;
+        if (!player.isValid())
+            return;
+        else
+            player.runCommand('/give @s acm:tool');
     }
     delete_addon_adress(event) {
         const event_message = event.message;
@@ -57,6 +66,7 @@ class AcmData {
     generate_addon_data(addon_data) {
         const input_settings = addon_data.settings;
         const input_information = addon_data.information;
+        const input_event_callback = addon_data.event_callback;
         const icon_path = addon_data.icon_path;
         let export_settings = [];
         const export_addon_data = {
@@ -74,6 +84,9 @@ class AcmData {
         }
         if (input_information) {
             export_addon_data.information = input_information;
+        }
+        if (input_event_callback) {
+            export_addon_data.event_callback = input_event_callback;
         }
         this.generate_database(export_addon_data); // Cast to AddonData if needed
     }
@@ -107,6 +120,9 @@ class AcmData {
         }
         if (addon_data.information) {
             database.setScore(`info:${JSON.stringify(addon_data.information)}`, 0);
+        }
+        if (addon_data.event_callback) {
+            database.setScore(`event:${addon_data.event_callback}`, 0);
         }
         if (addon_data.settings) {
             addon_data.settings.forEach((setting, index) => {

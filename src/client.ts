@@ -18,6 +18,7 @@ export const LANG = {
         okay: RawText.TRANSLATE('acm.button.okay'),
         information: RawText.TRANSLATE('acm.button.information'),
         settings: RawText.TRANSLATE('acm.button.settings'),
+        event: RawText.TRANSLATE('acm.button.event'),
         return: RawText.TRANSLATE('acm.button.return')
     },
     body: {

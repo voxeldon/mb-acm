@@ -13,6 +13,7 @@ acm.body.registered=§2Registered Addons:
 acm.button.okay=Okay
 acm.button.information=Information
 acm.button.settings=Settings
+acm.button.event=Run Extension
 acm.button.return=Return To Menu
 
 acm.util.addon_removed=Addon Removed

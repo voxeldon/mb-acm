@@ -28,14 +28,6 @@ class AcmData {
             const event_data: SettingData = JSON.parse(event_message);
             this.callback(event_data);
         }
-        else if (event_id.startsWith('acm:del')) this.delete_addon_adress(event);
-        else if (event_id.startsWith('acm:tool')) this.give_tool(event);
-    }
-
-    private give_tool(event: ScriptEventCommandMessageAfterEvent){
-        const player:Player = event.sourceEntity as Player;
-        if (!player.isValid()) return;
-        else player.runCommand('/give @s acm:tool');
     }
 
     private delete_addon_adress(event: ScriptEventCommandMessageAfterEvent){
