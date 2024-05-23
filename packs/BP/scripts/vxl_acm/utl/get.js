@@ -40,7 +40,7 @@ class Get {
         }
         return author;
     }
-    static addon_setting(addon_data, widget_id) {
+    static pop_addon_setting(addon_data, widget_id) {
         const participants = addon_data.getParticipants();
         for (const participant of participants) {
             if (participant.displayName.startsWith('set:')) {
@@ -48,6 +48,21 @@ class Get {
                 const setting_id = setting.label;
                 if (setting_id === widget_id) {
                     cls.SDB.removeKey(addon_data.displayName, participant.displayName);
+                    return setting;
+                }
+                else
+                    continue;
+            }
+        }
+        return undefined;
+    }
+    static addon_setting(addon_data, widget_id) {
+        const participants = addon_data.getParticipants();
+        for (const participant of participants) {
+            if (participant.displayName.startsWith('set:')) {
+                const setting = JSON.parse(participant.displayName.replace('set:', ''));
+                const setting_id = setting.label;
+                if (setting_id === widget_id) {
                     return setting;
                 }
                 else

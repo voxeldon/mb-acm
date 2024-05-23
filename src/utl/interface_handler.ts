@@ -1,10 +1,10 @@
-import { Dimension, ItemStack, ItemUseAfterEvent, ItemUseAfterEventSignal, Player, RawMessage, ScoreboardIdentity, ScoreboardObjective, world } from "@minecraft/server";
+import { Dimension, ItemStack, ItemUseAfterEvent, ItemUseAfterEventSignal, Player, RawMessage, ScoreboardIdentity, ScoreboardObjective, system, TicksPerSecond, world } from "@minecraft/server";
 import { cls, RawText } from "../spec/lib";
 import { ActionForm } from "../spec/cls/form";
 import { ICON_PATH, LANG } from "../client";
 import { Widgets } from "./widgets";
 import { Localize } from "./localize";
-import { DropDown, SettingData, Slider, TextField, Toggle } from "../acm";
+import { AddonSetting, DropDown, SettingData, Slider, TextField, Toggle } from "../acm";
 import { VerifyData } from "../acm/cls/verify_data";
 import { Get } from "./get";
 
@@ -21,6 +21,7 @@ class InterfaceHandler {
     }
 
     public on_ready(): void {
+        if (cls.SDB.getDb('acm.vxl.acm_core')) this.emit_update_signal()
         this.item_use_event.subscribe(this.handle_item_event.bind(this));
     }
 
@@ -152,7 +153,6 @@ class InterfaceHandler {
         if (!event_string) return;
         const event_data: string = event_string.replace('event:','');
         dimension.runCommand(`/scriptevent ${event_data}`);
-        console.warn(`/scriptevent ${event_data}`)
     }
 
     private update_addon_data(player:Player, addon_data: ScoreboardObjective, new_data: any, widget_index: Map<number, string[]>){
@@ -160,7 +160,7 @@ class InterfaceHandler {
         for (const widget of widget_index) {
             const index_position: number = widget[0]
             const widget_id = widget[1][1];
-            const setting: any = Get.addon_setting(addon_data, widget_id);
+            const setting: any = Get.pop_addon_setting(addon_data, widget_id);
             if (!setting) {
                 console.warn('ACM ERROR: Error reading setting data');
                 return;
@@ -244,6 +244,48 @@ class InterfaceHandler {
             } catch (error) {}
         }
         return button_index
+    }
+
+    private emit_update_signal() {
+        const settings_data: ScoreboardObjective[] = Get.global_acm_settings();
+    
+        const checkForPlayerAndEmit = (addon_data: ScoreboardObjective) => {
+            system.runTimeout(() => {
+                const player: Player | undefined = world.getAllPlayers()[0];
+                if (player) {
+                    const output_data: object = this.get_all_settings(addon_data);
+                    player.runCommand(`/scriptevent acm_data:${addon_data.displayName.replace('acm.', '')} ${JSON.stringify(output_data)}`);
+                } else {
+                    // Retry after the specified interval
+                    checkForPlayerAndEmit(addon_data);
+                }
+            }, TicksPerSecond);
+        };
+    
+        for (const addon_data of settings_data) {
+            checkForPlayerAndEmit(addon_data);
+        }
+    }
+    
+
+    private get_all_settings(addon_data: ScoreboardObjective): object{
+        const participants = addon_data.getParticipants()
+        const output_data: { [key: string]: object } = {};
+        for (const participant of participants) {
+            const id = participant.displayName;
+            if (id.startsWith('set:')) {
+                const setting_object: any = JSON.parse(id.replace('set:', ''));
+                if (setting_object.default_value) {
+                    output_data[setting_object.label] = setting_object.default_value;
+                }
+                else if (setting_object.default_value_index) {
+                    output_data[setting_object.label] = setting_object.default_value_index;
+                }
+                
+            }
+            
+        }
+        return output_data
     }
 }
 

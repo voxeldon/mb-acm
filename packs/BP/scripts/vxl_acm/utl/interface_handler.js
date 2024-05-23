@@ -1,4 +1,4 @@
-import { world } from "@minecraft/server";
+import { system, TicksPerSecond, world } from "@minecraft/server";
 import { cls, RawText } from "../spec/lib";
 import { ICON_PATH, LANG } from "../client";
 import { Widgets } from "./widgets";
@@ -13,6 +13,8 @@ class InterfaceHandler {
         this.tag_id = '';
     }
     on_ready() {
+        if (cls.SDB.getDb('acm.vxl.acm_core'))
+            this.emit_update_signal();
         this.item_use_event.subscribe(this.handle_item_event.bind(this));
     }
     update_settings(data) {
@@ -130,14 +132,13 @@ class InterfaceHandler {
             return;
         const event_data = event_string.replace('event:', '');
         dimension.runCommand(`/scriptevent ${event_data}`);
-        console.warn(`/scriptevent ${event_data}`);
     }
     update_addon_data(player, addon_data, new_data, widget_index) {
         const output_data = {};
         for (const widget of widget_index) {
             const index_position = widget[0];
             const widget_id = widget[1][1];
-            const setting = Get.addon_setting(addon_data, widget_id);
+            const setting = Get.pop_addon_setting(addon_data, widget_id);
             if (!setting) {
                 console.warn('ACM ERROR: Error reading setting data');
                 return;
@@ -224,6 +225,42 @@ class InterfaceHandler {
             catch (error) { }
         }
         return button_index;
+    }
+    emit_update_signal() {
+        const settings_data = Get.global_acm_settings();
+        const checkForPlayerAndEmit = (addon_data) => {
+            system.runTimeout(() => {
+                const player = world.getAllPlayers()[0];
+                if (player) {
+                    const output_data = this.get_all_settings(addon_data);
+                    player.runCommand(`/scriptevent acm_data:${addon_data.displayName.replace('acm.', '')} ${JSON.stringify(output_data)}`);
+                }
+                else {
+                    // Retry after the specified interval
+                    checkForPlayerAndEmit(addon_data);
+                }
+            }, TicksPerSecond);
+        };
+        for (const addon_data of settings_data) {
+            checkForPlayerAndEmit(addon_data);
+        }
+    }
+    get_all_settings(addon_data) {
+        const participants = addon_data.getParticipants();
+        const output_data = {};
+        for (const participant of participants) {
+            const id = participant.displayName;
+            if (id.startsWith('set:')) {
+                const setting_object = JSON.parse(id.replace('set:', ''));
+                if (setting_object.default_value) {
+                    output_data[setting_object.label] = setting_object.default_value;
+                }
+                else if (setting_object.default_value_index) {
+                    output_data[setting_object.label] = setting_object.default_value_index;
+                }
+            }
+        }
+        return output_data;
     }
 }
 export { InterfaceHandler };
