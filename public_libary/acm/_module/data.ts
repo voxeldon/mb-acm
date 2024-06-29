@@ -1,9 +1,16 @@
-import { Player, Scoreboard, ScoreboardObjective, ScriptEventCommandMessageAfterEvent, ScriptEventCommandMessageAfterEventSignal, system, world } from "@minecraft/server";
+/*  
+ Author: Donthedev <https://github.com/voxeldon> 
+**************************************************
+ Copyright (c) Voxel Media Co - Voxel Lab Studios
+**************************************************
+*/
+
+import { Scoreboard, ScoreboardObjective, ScriptEventCommandMessageAfterEvent, ScriptEventCommandMessageAfterEventSignal, system, world } from "@minecraft/server";
 import { AddonData, AddonSetting, SettingData} from "..";
 import { VerifyData } from "./verify_data";
 
 class AcmData {
-    private callback?: (data: any) => void;
+    private callback?: (data: SettingData) => void;
     private script_event: ScriptEventCommandMessageAfterEventSignal
     private event_keys: string[]
     private scoreboard: Scoreboard
@@ -13,7 +20,14 @@ class AcmData {
         this.event_keys = [];
         this.scoreboard = world.scoreboard;
     }
-    public subscribe(addons: AddonData[], callback: (data: SettingData) => void){
+
+    /**
+     * Subscribes to addon data events.
+     * @param addons - The addon data.
+     * @param callback - The callback function to be called when addon data is received.
+     * @returns Returns void.
+     */
+    public subscribe(addons: AddonData[], callback: (data: SettingData) => void): void {
         for (const addon_data of addons) {
             this.event_keys.push(`acm_data:${addon_data.team_id}.${addon_data.addon_id}`)
         }
@@ -21,15 +35,10 @@ class AcmData {
         this.script_event.subscribe(this.handle_script_event.bind(this));
     }
 
-    private handle_script_event(event: ScriptEventCommandMessageAfterEvent): void {
-        const event_id: string = event.id;
-        const event_message: string = event.message
-        if (this.event_keys.includes(event_id) && this.callback) {
-            const event_data: SettingData = JSON.parse(event_message);
-            this.callback(event_data);
-        }
-    }
-
+    /**
+     * Generates addon data.
+     * @param addon_data - The addon data to be generated.
+     */
     public generate_addon_data(addon_data: AddonData) {
         const input_settings = addon_data.settings;
         const input_information = addon_data.information;
@@ -58,12 +67,21 @@ class AcmData {
         }
 
         if (input_event_callback) {
-            export_addon_data.event_callback = input_event_callback;
+            export_addon_data.event_callback = {id:input_event_callback.id};
+            if (input_event_callback.title) export_addon_data.event_callback.title = input_event_callback.title;
         }
     
-        this.generate_database(export_addon_data as AddonData); // Cast to AddonData if needed
+        this.generate_database(export_addon_data as AddonData); 
     }
     
+    private handle_script_event(event: ScriptEventCommandMessageAfterEvent): void {
+        const event_id: string = event.id;
+        const event_message: string = event.message
+        if (this.event_keys.includes(event_id) && this.callback) {
+            const event_data: SettingData = JSON.parse(event_message);
+            this.callback(event_data);
+        }
+    }
 
     private parse_addon_data(settings_data: AddonSetting[]): AddonSetting[]{
         const export_settings: AddonSetting[] = [];
@@ -96,7 +114,12 @@ class AcmData {
             database.setScore(`info:${JSON.stringify(addon_data.information)}`, 0);
         }
         if (addon_data.event_callback) {
-            database.setScore(`event:${addon_data.event_callback}`, 0);
+            if (addon_data.event_callback.id) {
+                database.setScore(`event:${addon_data.event_callback.id}`, 0);
+            }
+            if (addon_data.event_callback.title) {
+                database.setScore(`event_title:${addon_data.event_callback.title}`, 0);
+            }
         }
         if (addon_data.settings) {
             addon_data.settings.forEach((setting, index) => {

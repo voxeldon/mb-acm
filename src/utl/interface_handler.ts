@@ -54,10 +54,10 @@ class InterfaceHandler {
             actionForm.setTitle(LANG.title.main)
             .setBody(
                 RawText.MESSAGE(
-                    RawText.TRANSLATE(LANG.body.header),
+                    LANG.body.header,
                     RawText.TEXT('\n'),
                     RawText.TEXT('\n'),
-                    RawText.TRANSLATE(LANG.body.registered),
+                    LANG.body.registered,
                     RawText.TEXT(addon_count.toString()),
                     RawText.TEXT('\n'),
                     RawText.TEXT('\n')
@@ -91,7 +91,11 @@ class InterfaceHandler {
             slot_in_index += 1
         }
         if (VerifyData.has_type(addon_data, 'event')) {
-            actionForm.addButton(LANG.button.event, ICON_PATH.exclaim);
+            const participants: ScoreboardIdentity[] = addon_data.getParticipants()
+            const event_title_string: string | undefined = participants.find(participant => participant.displayName.startsWith('event_title:'))?.displayName.replace('event_title:','');
+            let event_button_title: RawMessage = LANG.button.event;
+            if (event_title_string !== undefined) event_button_title = RawText.TRANSLATE(`${addon_data.displayName}.${event_title_string}`)
+            actionForm.addButton(event_button_title, ICON_PATH.exclaim);
             button_index.set(slot_in_index, 'event');
             slot_in_index += 1
         }
@@ -152,7 +156,7 @@ class InterfaceHandler {
         const event_string: string | undefined = participants.find(participant => participant.displayName.startsWith('event:'))?.displayName;
         if (!event_string) return;
         const event_data: string = event_string.replace('event:','');
-        dimension.runCommand(`/scriptevent ${event_data}`);
+        player.runCommand(`/scriptevent ${event_data} ${player.id}`);
     }
 
     private update_addon_data(player:Player, addon_data: ScoreboardObjective, new_data: any, widget_index: Map<number, string[]>){

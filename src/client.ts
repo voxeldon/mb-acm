@@ -22,7 +22,7 @@ export const LANG = {
         return: RawText.TRANSLATE('acm.button.return')
     },
     body: {
-        header: 'acm.body.header',
-        registered: 'acm.body.registered'
+        header: RawText.TRANSLATE('acm.body.header'),
+        registered: RawText.TRANSLATE('acm.body.registered')
     }
 }

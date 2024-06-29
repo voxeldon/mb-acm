@@ -93,7 +93,8 @@ class AcmData {
         }
 
         if (input_event_callback) {
-            export_addon_data.event_callback = input_event_callback;
+            export_addon_data.event_callback = {id:input_event_callback.id};
+            if (input_event_callback.title) export_addon_data.event_callback.title = input_event_callback.title;
         }
     
         this.generate_database(export_addon_data as AddonData); // Cast to AddonData if needed
@@ -131,7 +132,12 @@ class AcmData {
             database.setScore(`info:${JSON.stringify(addon_data.information)}`, 0);
         }
         if (addon_data.event_callback) {
-            database.setScore(`event:${addon_data.event_callback}`, 0);
+            if (addon_data.event_callback.id) {
+                database.setScore(`event:${addon_data.event_callback.id}`, 0);
+            }
+            if (addon_data.event_callback.title) {
+                database.setScore(`event_title:${addon_data.event_callback.title}`, 0);
+            }
         }
         if (addon_data.settings) {
             addon_data.settings.forEach((setting, index) => {

@@ -1,7 +1,3 @@
-export type AddonConfig = {
-    form_type: string,
-}
-
 export type SettingData = { [key: string]: any }
 
 export type AddonData = {
@@ -12,7 +8,10 @@ export type AddonData = {
     description: string[]
     information?: string[]
     settings?: any[]
-    event_callback?: string
+    event_callback?: {
+        id: string,
+        title?: string
+    }
 }
 
 export type AddonSetting = TextField | DropDown | Slider | Toggle

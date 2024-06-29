@@ -1,4 +1,4 @@
-import { AddonData, DropDown, SettingData, Slider, TextField, Toggle } from "./acm";
+import { AddonData, SettingData, TextField, Toggle } from "./acm";
 import { ACM } from "./acm/lib";
 import { InterfaceHandler } from "./utl/interface_handler";
 

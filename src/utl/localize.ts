@@ -1,3 +1,10 @@
+/*  
+ Author: Donthedev <https://github.com/voxeldon> 
+**************************************************
+ Copyright (c) Voxel Media Co - Voxel Lab Studios
+**************************************************
+*/
+
 import { RawMessage, ScoreboardObjective } from "@minecraft/server";
 import { RawText } from "../spec/lib";
 

@@ -1,3 +1,10 @@
+/*  
+ Author: Donthedev <https://github.com/voxeldon> 
+**************************************************
+ Copyright (c) Voxel Media Co - Voxel Lab Studios
+**************************************************
+*/
+
 import { RawMessage, ScoreboardObjective } from "@minecraft/server";
 import { AddonSetting, DropDown, Slider, TextField, Toggle } from "../acm";
 import { VerifyData } from "../acm/cls/verify_data";
